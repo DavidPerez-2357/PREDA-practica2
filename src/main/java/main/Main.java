@@ -2,8 +2,6 @@ package main;
 
 import utils.*;
 
-import java.util.ArrayList;
-
 public class Main {
     private static ArgProcessor argP;
     private static Printer printer;
@@ -11,7 +9,8 @@ public class Main {
 
     public static void main(String[] args) {
         argP = new ArgProcessor(args);
-        String matrixInstructions;
+        String schoolInstructions;
+        School school;
 
         if (argP.getFileOut() != null) {
             printer = new FilePrinter(argP.getFileOut());
@@ -25,18 +24,29 @@ public class Main {
         }
 
         if (argP.getFileIn() == null) {
-            throw new NullPointerException("XX Fichero de entrada no especificado.");
+            //throw new NullPointerException("XX Fichero de entrada no especificado.");
         }
 
         // Read input file
         try {
-            matrixInstructions = FileReader.readFile(argP.getFileIn());
+            //SchoolInstructions = FileReader.readFile(argP.getFileIn());
+            schoolInstructions = "2\n\n101 30\n102 25\n\n201 20\n202 26\n\n301 201 202\n302 201";
         } catch (NullPointerException e) {
             printer.println(e.getMessage());
             return;
         }
 
-        // Create matrix
+        // Create School
+        try {
+            assert schoolInstructions != null;
+            school = InputFileReader.convertFileToSchool(schoolInstructions);
+        } catch (IllegalArgumentException e) {
+            printer.println("XX " + e.getMessage());
+            return;
+        }
+
+        // Print school
+        printer.println(school.toString());
 
         // Execute algorithm
 
@@ -45,11 +55,11 @@ public class Main {
 
     public static void printHelpMessage() {
         String text =
-                "\nSINTAXIS: conectividad [-t][-h] [fichero entrada] [fichero salida]\n" +
+                "\nSINTAXIS: asignacionCursos [-t][-h] [fichero entrada] [fichero salida]\n" +
                         "    -t Traza cada paso\n" +
                         "    -h Muestra esta ayuda\n" +
-                        "    [fichero entrada] Valores n,y, las conexiones y su coste\n" +
-                        "    [fichero salida] Conexiones seleccionadas, su coste y el coste total\n";
+                        "    [fichero entrada] Valores n y listas de aulas, cursos y profesores\n" +
+                        "    [fichero salida] Lista de curso y profesor asignado\n";
 
         printer.print(text);
     }
