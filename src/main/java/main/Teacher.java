@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Teacher {
-    int id;
-    List<Integer> courses;
+    private int id;
+    private List<Integer> courses;
 
     public Teacher(int id, List<Integer> courses) {
         this.id = id;
