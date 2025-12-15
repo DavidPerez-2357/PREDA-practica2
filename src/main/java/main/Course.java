@@ -1,8 +1,8 @@
 package main;
 
 public class Course {
-    int id;
-    int numStudents;
+    private int id;
+    private int numStudents;
 
     public Course(int id, int numStudents) {
         this.id = id;
