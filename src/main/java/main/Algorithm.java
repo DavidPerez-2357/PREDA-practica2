@@ -3,8 +3,6 @@ import utils.Printer;
 
 import java.util.*;
 
-/*
-
 // El objetivo es explorar niveles y volver atras cuando ya no sea posible continuar
 
 // Empezamos con un colegio donde no hay ninguna asignacion
@@ -12,14 +10,15 @@ import java.util.*;
 // La primera posibilidad de asignacion podria ser [1, 1, 1]
 //  Despues de eso se seguiria con [1, 1, 2]
 //    Depues de eso se seguiria con [1, 1, 3]
-//      Si este ultimo tambien falla, se suma uno al siguiente numero y se empieza
-// Ahora [1, 2, 1]
+//      Despues de eso se seguiria con [1, 2, 1]
+//        Si esta asignacion es valida, se continua con el siguiente nivel
 
-*/
+//      Ahora se prueba con [2, 1, 2]
+//      Si no es valida, se prueba con la siguiente asignacion en este nivel
 
 public class Algorithm {
     private final boolean traceMode;
-    private Printer printer;
+    private final Printer printer;
 
     private School school;
 
@@ -63,9 +62,16 @@ public class Algorithm {
         List<int[]> branchesToExplore = fillBranchesToExplore(school.getTotal(), k, result);
         AcademicRegister current;
 
+        if (traceMode && k < school.getTotal()) {
+            printer.println("\n-- Explorando nivel " + (k+1) + " con " + branchesToExplore.size() + " ramas posibles.");
+        }
+
         for (int[] register : branchesToExplore) {
             if (isSolutionComplete(result)) {
-                System.out.println("Rama completada con exito!");
+                if (traceMode && k == school.getTotal() - 2) {
+                    printer.println("Solución completa encontrada!");
+                }
+
                 return result;
             }
 
@@ -74,8 +80,6 @@ public class Algorithm {
                 result.removeLast();
             }
 
-            System.out.println("\nExplorando rama: " + (register[0]) + " " + (register[1]) + " " + (register[2]));
-            System.out.println("Branches to explore: " + branchesToExplore.size());
 
             current = new AcademicRegister(
                 school.getRooms().get(register[1]),
@@ -83,24 +87,37 @@ public class Algorithm {
                 school.getTeachers().get(register[2])
             );
 
+            if (traceMode) {
+                printer.println("\nExplorando rama: " + (current.getCourse().getId()) + " " + (current.getRoom().getId()) + " " + (current.getTeacher().getId()));
+            }
+
             current.indexCourse = k;
             current.indexRoom = register[1];
             current.indexTeacher = register[2];
 
-            if (!current.isValid() || !isSolutionCompletable(result)) {
-                System.out.println("Rama no completables, retrocediendo...");
+            if (!isSolutionCompletable(current)) {
+                if (traceMode) {
+                    printer.println("Rama no completable, retrocediendo...");
+                }
+
                 continue;
             }
 
+            if (traceMode && k+1 < school.getTotal()) {
+                printer.println("Rama completable, avanzando al siguiente nivel ->");
+            }else if (traceMode) {
+                printer.println("Rama completable y último nivel alcanzado");
+            }
+
             result.add(current);
-            exploreBranch(result, k+1);
+            exploreBranch(result, k + 1);
         }
 
         return null;
     }
 
-    public boolean isSolutionCompletable(List<AcademicRegister> registers) {
-        return registers.isEmpty() || registers.getLast().isValid();
+    public boolean isSolutionCompletable(AcademicRegister current) {
+        return current.isValid();
     }
 
     public boolean isSolutionComplete(List<AcademicRegister> register) {
