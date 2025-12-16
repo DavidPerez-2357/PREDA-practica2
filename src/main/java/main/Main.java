@@ -2,6 +2,8 @@ package main;
 
 import utils.*;
 
+import java.util.List;
+
 public class Main {
     private static ArgProcessor argP;
     private static Printer printer;
@@ -24,13 +26,12 @@ public class Main {
         }
 
         if (argP.getFileIn() == null) {
-            //throw new NullPointerException("XX Fichero de entrada no especificado.");
+            throw new NullPointerException("XX Fichero de entrada no especificado.");
         }
 
         // Read input file
         try {
-            //SchoolInstructions = FileReader.readFile(argP.getFileIn());
-            schoolInstructions = "2\n\n101 30\n102 25\n\n201 20\n202 26\n\n301 201 202\n302 201";
+            schoolInstructions = FileReader.readFile(argP.getFileIn());
         } catch (NullPointerException e) {
             printer.println(e.getMessage());
             return;
@@ -45,21 +46,44 @@ public class Main {
             return;
         }
 
-        // Print school
-        printer.println(school.toString());
-
         // Execute algorithm
+        algorithm = new Algorithm(argP.isTraceMode(), printer);
+
+        if (argP.isTraceMode()) {
+            System.out.println("\n/------------------- Algoritmo Vuelta atrás ------------------\\");
+        }
+
+        List<AcademicRegister> result = algorithm.execute(school);
+
+        if (argP.isTraceMode()) {
+            System.out.println("\n\\-------------------------------------------------------/\n");
+        }
+
+        // No solution found
+        if (result == null) {
+            printer.println("0");
+            return;
+        }
 
         // Print solution
+        for (AcademicRegister register : result) {
+            printer.println(
+                    register.getRoom().getId() + " " +
+                    register.getCourse().getId() + " " +
+                    register.getTeacher().getId()
+            );
+        }
     }
 
     public static void printHelpMessage() {
         String text =
-                "\nSINTAXIS: asignacionCursos [-t][-h] [fichero entrada] [fichero salida]\n" +
-                        "    -t Traza cada paso\n" +
-                        "    -h Muestra esta ayuda\n" +
-                        "    [fichero entrada] Valores n y listas de aulas, cursos y profesores\n" +
-                        "    [fichero salida] Lista de curso y profesor asignado\n";
+                """
+                    SINTAXIS: asignacionCursos [-t][-h] [fichero entrada] [fichero salida]
+                        -t Traza cada paso
+                        -h Muestra esta ayuda
+                        [fichero entrada] Valores n y listas de aulas, cursos y profesores
+                        [fichero salida] Lista de curso y profesor asignado
+                """;
 
         printer.print(text);
     }
