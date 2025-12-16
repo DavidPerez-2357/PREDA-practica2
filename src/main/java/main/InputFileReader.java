@@ -14,8 +14,8 @@ public class InputFileReader {
 
         return new School(
             Integer.parseInt(sections.getFirst().getFirst()),
-            sections.get(1).stream().map(Room::new).toList(),
-            sections.get(2).stream().map(Course::new).toList(),
+            sections.get(1).stream().map(Course::new).toList(),
+            sections.get(2).stream().map(Room::new).toList(),
             sections.get(3).stream().map(Teacher::new).toList()
         );
     }

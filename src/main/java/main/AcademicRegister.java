@@ -44,6 +44,6 @@ public class AcademicRegister {
     }
 
     public String toString() {
-        return "AcademicRegister{room=" + room + ", course=" + course + ", teacher=" + teacher + "}";
+        return "AcademicRegister{course=" + course + ", room=" + room + ", teacher=" + teacher + "}";
     }
 }

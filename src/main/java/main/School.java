@@ -9,10 +9,10 @@ public class School {
     private List<Course> courses;
     private List<Teacher> teachers;
 
-    public School(int total, List<Room> rooms, List<Course> courses, List<Teacher> teachers) {
+    public School(int total, List<Course> courses, List<Room> rooms, List<Teacher> teachers) {
         this.total = total;
-        setRooms(rooms);
         setCourses(courses);
+        setRooms(rooms);
         setTeachers(teachers);
     }
 
@@ -63,8 +63,8 @@ public class School {
     public String toString() {
         String result = "School{\n";
         result += "  total=" + total + ",\n";
-        result += "  rooms=" + rooms + ",\n";
         result += "  courses=" + courses + ",\n";
+        result += "  rooms=" + rooms + ",\n";
         result += "  teachers=" + teachers + "\n";
         result += "}";
 
