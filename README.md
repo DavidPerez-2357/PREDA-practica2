@@ -1,4 +1,4 @@
-# [Titulo del proyecto] - Algoritmo de [Nombre del algoritmo]
+# Asignacion de Cursos a Aulas y Profesores - Algoritmo Vuelta Atrás
 Este proyecto forma parte de una práctica de la asignatura **Programación y estructuras de datos avanzadas**, cuyo objetivo es
 asignar cursos a aulas y profesorado teniendo en cuenta las restricciones de capacidad, disponibilidad y especialización.
 
