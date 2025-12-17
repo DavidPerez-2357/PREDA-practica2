@@ -47,7 +47,7 @@ public class Main {
         }
 
         // Execute algorithm
-        algorithm = new Algorithm(argP.isTraceMode(), printer);
+        algorithm = new Algorithm(argP.isTraceMode());
 
         if (argP.isTraceMode()) {
             System.out.println("\n/------------------- Algoritmo Vuelta atrás ------------------\\");

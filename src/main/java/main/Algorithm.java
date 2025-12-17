@@ -1,5 +1,4 @@
 package main;
-import utils.Printer;
 
 import java.util.*;
 
@@ -18,14 +17,11 @@ import java.util.*;
 
 public class Algorithm {
     private final boolean traceMode;
-    private final Printer printer;
-
     private School school;
 
 
-    public Algorithm(boolean traceMode, Printer printer) {
+    public Algorithm(boolean traceMode) {
         this.traceMode = traceMode;
-        this.printer = printer;
     }
 
     public List<int[]> fillBranchesToExplore(int n, int actualCourse, List<AcademicRegister> currentRegisters) {
@@ -62,14 +58,15 @@ public class Algorithm {
         List<int[]> branchesToExplore = fillBranchesToExplore(school.getTotal(), k, result);
         AcademicRegister current;
 
+
         if (traceMode && k < school.getTotal()) {
-            printer.println("\n-- Explorando nivel " + (k+1) + " con " + branchesToExplore.size() + " ramas posibles.");
+            System.out.println("\n-- Explorando nivel " + (k+1) + " con " + branchesToExplore.size() + " ramas posibles.");
         }
 
         for (int[] register : branchesToExplore) {
             if (isSolutionComplete(result)) {
                 if (traceMode && k == school.getTotal() - 2) {
-                    printer.println("Solución completa encontrada!");
+                    System.out.println("Solución completa encontrada!");
                 }
 
                 return result;
@@ -88,7 +85,7 @@ public class Algorithm {
             );
 
             if (traceMode) {
-                printer.println("\nExplorando rama: " + (current.getCourse().getId()) + " " + (current.getRoom().getId()) + " " + (current.getTeacher().getId()));
+                System.out.println("\nExplorando rama: " + (current.getCourse().getId()) + " " + (current.getRoom().getId()) + " " + (current.getTeacher().getId()));
             }
 
             current.indexCourse = k;
@@ -97,16 +94,16 @@ public class Algorithm {
 
             if (!isSolutionCompletable(current)) {
                 if (traceMode) {
-                    printer.println("Rama no completable, retrocediendo...");
+                    System.out.println("Rama no completable, retrocediendo...");
                 }
 
                 continue;
             }
 
             if (traceMode && k+1 < school.getTotal()) {
-                printer.println("Rama completable, avanzando al siguiente nivel ->");
+                System.out.println("Rama completable, avanzando al siguiente nivel ->");
             }else if (traceMode) {
-                printer.println("Rama completable y último nivel alcanzado");
+                System.out.println("Rama completable y último nivel alcanzado");
             }
 
             result.add(current);
